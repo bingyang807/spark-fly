@@ -47,10 +47,13 @@ object WordCount {
     wordCounts.foreach(println)
 
     // 打印词频最高的5个词汇
-    val top5Word = wordCounts.map { case (k, v) => (k, v) }.sortByKey(false).take(5)
+    // map{case (k, v) => (v, k)}，这一步是把（Key，Value）对调，目的是按照“计数”来排序。
+    // 比如，原来是（Spark，63），这一步之后，这条记录就变成了（63，Spark），不妨把这一步拆解开来，用first探索一下
+    // sortByKey(false) 是降序排序，注意，这时候的Key，不再是单词了，而是调换顺序之后的Value（比如63），也就是单词计数
+    val top5Word = wordCounts.map { case (k, v) => (v, k) }.sortByKey(false).take(5)
     top5Word.foreach(println)
 
-    wordCounts.saveAsTextFile("/Users/alfie/workspace/code/learn/spark-fly/spark-basic/src/main/resources/wordcount.txt")
+//    wordCounts.saveAsTextFile("/Users/alfie/workspace/code/learn/spark-fly/spark-basic/src/main/resources/wordcount.txt")
 
   }
 
