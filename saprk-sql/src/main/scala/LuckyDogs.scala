@@ -1,3 +1,4 @@
+import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, count, lit, max}
 import org.apache.spark.sql.{DataFrame, SparkSession, functions}
 
@@ -10,13 +11,17 @@ import org.apache.spark.sql.{DataFrame, SparkSession, functions}
 object LuckyDogs {
 
   def main(args: Array[String]): Unit = {
+    val sparkConf: SparkConf = new SparkConf()
+    sparkConf.setExecutorEnv("spark.executor.memory", "2g")
+    sparkConf.setExecutorEnv("spark.executor.cores","2")
     // create sparksession
     val spark: SparkSession = SparkSession.builder()
       .master("local[*]")
+      .config(sparkConf)
       .getOrCreate()
 
 
-    val rootPath: String = "/Users/alfie/workspace/data/CarLottery-2011-2019"
+    val rootPath: String = "/Users/alfie/Downloads/CarLottery-2011-2019"
     // 申请者数据
     val path_apply: String = s"${rootPath}/apply"
     val applyNumbersDF: DataFrame = spark.read.parquet(path_apply)
