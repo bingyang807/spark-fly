@@ -16,7 +16,7 @@ object LuckyDogs {
       .getOrCreate()
 
 
-    val rootPath: String = "/Users/alfie/workspace/code/learn/spark-fly/saprk-sql/src/main/resources/CarLottery-2011-2019"
+    val rootPath: String = "/Users/alfie/workspace/data/CarLottery-2011-2019"
     // 申请者数据
     val path_apply: String = s"${rootPath}/apply"
     val applyNumbersDF: DataFrame = spark.read.parquet(path_apply)
@@ -52,7 +52,7 @@ object LuckyDogs {
     // 我们想知道的是，不同倍率之下的人数分布是什么样子的。换句话说，这一次，我们要按照倍率来对数据做分组，然后计算不同倍率下的统计计数
     // 以multiplier倍率做分组，统计人数
     val result: DataFrame = uniqueMultipliers.groupBy("multiplier")
-      .agg(count(lit(1))).alias("cnt")
+      .agg(count(lit(1)).alias("cnt"))
       .orderBy("multiplier")
 
     result.collect
