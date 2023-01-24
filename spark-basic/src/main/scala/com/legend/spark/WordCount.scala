@@ -20,7 +20,7 @@ object WordCount {
       .getOrCreate()
     val sc = spark.sparkContext
     // 这里的下划线"_"是占位符，代表数据文件的根目录
-    val rootPath: String = "/Users/alfie/workspace/code/learn/spark-fly/spark-basic/src/main/resources"
+    val rootPath: String = "/Users/alfie/workspace/code/learn/learn-spark/spark-fly/spark-basic/src/main/resources"
 //     val rootPath: String = _
     val file: String = s"${rootPath}/wikiOfSpark.txt"
 
@@ -53,7 +53,7 @@ object WordCount {
     val top5Word = wordCounts.map { case (k, v) => (v, k) }.sortByKey(false).take(5)
     top5Word.foreach(println)
 
-//    wordCounts.saveAsTextFile("/Users/alfie/workspace/code/learn/spark-fly/spark-basic/src/main/resources/wordcount.txt")
+    wordCounts.saveAsTextFile("/Users/alfie/workspace/code/learn/learn-spark/spark-fly/result/basic/hellworld")
 
   }
 
