@@ -53,9 +53,11 @@ object WordCountStreamingProcessLataData {
       .withColumn("word", explode(col("words")))
       //      .withColumn("word", explode($"words"))
       // 启用Watermark机制，第一个参数是事件时间，而第二个参数就是由用户指定的容忍度 T
-      .withWatermark("eventTime", "10 minute")
+      .withWatermark("eventTime", "5 minute")
+//      .withWatermark("eventTime", "10 minute")
       // 以tubling window 与 单词word为Key做分组
-      .groupBy(window(col("eventTime"), "5 minute"), col("word"))
+      .groupBy(window(col("eventTime"), "10 minute"), col("word"))
+//      .groupBy(window(col("eventTime"), "5 minute"), col("word"))
       // 分组计数
       .count()
 
