@@ -10,7 +10,7 @@ object WordCountStreaming {
 
     println("hello world")
     // 创建sparksession，本地执行
-    var spark: SparkSession = SparkSession.builder()
+    val spark: SparkSession = SparkSession.builder()
       .master("local")
       .getOrCreate()
 
@@ -37,13 +37,15 @@ object WordCountStreaming {
     /**
      * 使用DataFrame API完成Word Count计算
      */
+    // 引入spark.implicits就可以用$"column"代表列
+    import spark.implicits._
     // 首先把接收到的字符串，以空格为分隔符做拆分，得到单词数组words
     // 从 Socket 创建的 DataFrame，默认只有一个“value”列，它以行为粒度，存储着从 Socket 接收到数据流
-    df = df.withColumn("words", split(col("value"), " "))
-      //    df = df.withColumn("words", split($"value", " "))
+    // df = df.withColumn("words", split(col("value"), " "))
+    df = df.withColumn("words", split($"value", " "))
       // 把数组words展平为单词word
-      .withColumn("word", explode(col("words")))
-      //      .withColumn("word", explode($"words"))
+//      .withColumn("word", explode(col("words")))
+      .withColumn("word", explode($"words"))
       // 以单词word为Key做分组
       .groupBy("word")
       // 分组计数
